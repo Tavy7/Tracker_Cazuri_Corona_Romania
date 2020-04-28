@@ -102,7 +102,7 @@ def printData(data):
 	dateAzi = getTodayStats(location['timelines'])
 
 	print("\nCazuri noi azi: {}".format(dateAzi[0]))
-	print("Dece noi azi: {}".format(dateAzi[1]))
+	print("Decese noi azi: {}".format(dateAzi[1]))
 
 
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
