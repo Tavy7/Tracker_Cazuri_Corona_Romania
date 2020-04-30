@@ -60,6 +60,7 @@ def cazuriNoiZilnice(cazuri):
 	print("\n\nApogeul de cazuri noi a fost la data {}, cu {} cazuri.".format(dataCazuriMax, cazuriMax))
 
 def meniu(timelines):
+	print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	print("\n 1 - Numar cazuri dupa data")
 	print(" 2 - Numar morti dupa data")
 	print(" 3 - Numar cazuri noi zilnice")
@@ -77,6 +78,7 @@ def meniu(timelines):
 
 	if int(x) == 3:
 		cazuriNoiZilnice(timelines['confirmed']['timeline'])
+		meniu(timelines)
 		return
 
 
@@ -142,7 +144,7 @@ def printData(data):
 	print("Dece noi azi: {}".format(dateAzi[1]))
 
 
-	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	print ("\nDate actualizate la: " + data['location']['last_updated'][:10])
 
 	meniu(location['timelines'])
