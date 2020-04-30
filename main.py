@@ -13,8 +13,11 @@ def addEndKey(dateStr):
 def getTodayDate():
 	return addEndKey(str(datetime.date.today()))
 
-def getYesterdayDate(i):
+def getDateIDaysAgo(i):
 	return addEndKey(str(datetime.date.today() - datetime.timedelta(days = i)))
+
+def getDate1DayBefore(date):
+	return addEndKey(str(date - datetime.timedelta(days = 1))[:10]) 
 
 def inputDateObject():
 	print("Prima inregistrare este la data de: 22-01-2020.")
@@ -32,20 +35,39 @@ def inputDateObject():
 		luna = '0' + aux
 	
 	an = int(input("An = "))
-
-	return datetime.datetime(int(an), int(luna), zi)
+	return datetime.datetime(int(an), int(luna), int(zi))
 
 def getProcent(x, y):
 	return float(x) / float(y)  * 100
 
+def cazuriNoiZilnice(cazuri):
+	cazuriMax = 0
+
+	print("Data\t\tNumar cazuri\tNumar cazuri noi")
+	aux = 0
+	for i, j in zip(cazuri, cazuri.values()):
+		if j == 0:
+			continue
+
+		print(i[:10], "\t", j, "\t\t", j - aux)
+
+		if j - aux > cazuriMax:
+			cazuriMax = j - aux
+			dataCazuriMax = i[:10]
+
+		aux = j
+
+	print("\n\nApogeul de cazuri noi a fost la data {}, cu {} cazuri.".format(dataCazuriMax, cazuriMax))
+
 def meniu(timelines):
-	print("\n1 - Numar cazuri dupa data")
-	print("2 - Numar morti dupa data")
-	print("0 - Iesire")
+	print("\n 1 - Numar cazuri dupa data")
+	print(" 2 - Numar morti dupa data")
+	print(" 3 - Numar cazuri noi zilnice")
+	print(" 0 - Iesire")
 
 	x = input()
 
-	if int(x) != 0 and int(x) != 1 and int(x) != 2:
+	if int(x) not in [1, 2, 3, 0]:
 		print("Input gresit!")
 		meniu(timelines)
 		return
@@ -53,18 +75,33 @@ def meniu(timelines):
 	if int(x) == 0:
 		return
 
-	date = addEndKey(str(inputDateObject()))
+	if int(x) == 3:
+		cazuriNoiZilnice(timelines['confirmed']['timeline'])
+		return
+
+
+	dataAzi = inputDateObject()
+	dataIeri = getDate1DayBefore(dataAzi)
+
+	dataAzi = addEndKey(str(dataAzi)[:10])
+
+	print(dataAzi)
+	print(dataIeri)
 
 	if int(x) == 1:
-		if date in timelines['confirmed']:
-			print (timelines['confirmed'][date])
-		else:
+		confirmed = timelines['confirmed']['timeline']
+		if dataAzi in confirmed:
+			print ("La data selectata au fost {} cazuri.\nDin care {} noi.".format(
+				confirmed[dataAzi], confirmed[dataAzi] - confirmed[dataIeri]))
+		else:	
 			print ("Nu exista inregistrari pentru data introdusa.")
 		return
 
 	if int(x) == 2:
-		if date in timelines['deaths']:
-			print (timelines['deaths'][date])
+		decese = timelines['deaths']['timeline']
+		if dataAzi in decese:
+			print ("La data selectata au fost {} decese.\nDin care {} noi.".format(
+				decese[dataAzi], decese[dataAzi] - decese[dataIeri]))
 		else:
 			print ("Nu exista inregistrari pentru data introdusa.")
 		return
@@ -75,7 +112,7 @@ def getTodayStats(timelines):
 	if getTodayDate() in timelines['confirmed']['timeline']:
 		i = 1
 	
-	ieri = (getYesterdayDate(i))
+	ieri = (getDateIDaysAgo(i))
 
 	cazuri_ieri = timelines['confirmed']['timeline'][ieri]
 	decese_ieri = timelines['deaths']['timeline'][ieri]
@@ -102,7 +139,7 @@ def printData(data):
 	dateAzi = getTodayStats(location['timelines'])
 
 	print("\nCazuri noi azi: {}".format(dateAzi[0]))
-	print("Decese noi azi: {}".format(dateAzi[1]))
+	print("Dece noi azi: {}".format(dateAzi[1]))
 
 
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
