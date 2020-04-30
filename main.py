@@ -1,5 +1,6 @@
 import requests
 import datetime
+import matplotlib.pyplot as plt
 
 
 def getData():
@@ -59,25 +60,60 @@ def cazuriNoiZilnice(cazuri):
 
 	print("\n\nApogeul de cazuri noi a fost la data {}, cu {} cazuri.".format(dataCazuriMax, cazuriMax))
 
+def afisareGraficCazuri(cazuri):
+	label, height = [], []
+
+	aux = 0
+	luna = "none"
+	for i, j in zip(cazuri, cazuri.values()):
+		if j == 0:
+			continue
+		height.append(int(j - aux))
+
+		if str(i)[6] != luna:
+			luna = str(i)[6]
+			label.append(luna)
+			continue
+
+		label.append(str(i)[8:10])
+
+		aux = j
+
+	plt.bar(range(1, len(height) + 1), height,
+	 tick_label = label, width = 0.7, color = 'black')
+
+
+	plt.xlabel('Date') 
+	plt.ylabel("Numar cazuri")
+	plt.title("Cazuri noi zilnice")
+
+	plt.show()
+
 def meniu(timelines):
 	print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	print("\n 1 - Numar cazuri dupa data")
 	print(" 2 - Numar morti dupa data")
 	print(" 3 - Numar cazuri noi zilnice")
+	print(" 4 - Grafic cazuri noi zilnice")
 	print(" 0 - Iesire")
 
 	x = input()
 
-	if int(x) not in [1, 2, 3, 0]:
+	if x not in ['1', '2', '3', '4', '0']:
 		print("Input gresit!")
 		meniu(timelines)
 		return
 
-	if int(x) == 0:
+	if x == '0':
 		return
 
-	if int(x) == 3:
+	if x == '3':
 		cazuriNoiZilnice(timelines['confirmed']['timeline'])
+		meniu(timelines)
+		return
+
+	if x == '4':
+		afisareGraficCazuri(timelines['confirmed']['timeline'])
 		meniu(timelines)
 		return
 
@@ -90,7 +126,7 @@ def meniu(timelines):
 	print(dataAzi)
 	print(dataIeri)
 
-	if int(x) == 1:
+	if x == '1':
 		confirmed = timelines['confirmed']['timeline']
 		if dataAzi in confirmed:
 			print ("La data selectata au fost {} cazuri.\nDin care {} noi.".format(
@@ -99,7 +135,7 @@ def meniu(timelines):
 			print ("Nu exista inregistrari pentru data introdusa.")
 		return
 
-	if int(x) == 2:
+	if x == '2':
 		decese = timelines['deaths']['timeline']
 		if dataAzi in decese:
 			print ("La data selectata au fost {} decese.\nDin care {} noi.".format(
