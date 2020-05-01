@@ -60,7 +60,7 @@ def cazuriNoiZilnice(cazuri):
 
 	print("\n\nApogeul de cazuri noi a fost la data {}, cu {} cazuri.".format(dataCazuriMax, cazuriMax))
 
-def afisareGraficCazuri(cazuri):
+def afisareGraficCazuriNoi(cazuri):
 	label, height = [], []
 
 	aux = 0
@@ -89,17 +89,46 @@ def afisareGraficCazuri(cazuri):
 
 	plt.show()
 
+def afisareGrafiCazuri(cazuri):
+	label, height = [], []
+	luna = "none"
+	
+	for i, j in zip(cazuri, cazuri.values()):
+		if j == 0:
+			continue
+		height.append(int(j))
+
+		if str(i)[6] != luna:
+			luna = str(i)[6]
+			label.append(luna)
+			continue
+
+		label.append(str(i)[8:10])
+	print (label)
+
+
+	plt.bar(range(1, len(height) + 1), height,
+	 tick_label = label, width = 0.7, color = 'black')
+
+
+	plt.xlabel('Date') 
+	plt.ylabel("Numar cazuri")
+	plt.title("Cazuri noi zilnice")
+
+	plt.show()
+
 def meniu(timelines):
 	print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	print("\n 1 - Numar cazuri dupa data")
 	print(" 2 - Numar morti dupa data")
 	print(" 3 - Numar cazuri noi zilnice")
 	print(" 4 - Grafic cazuri noi zilnice")
+	print(" 5 - Grafic cazuri totale")
 	print(" 0 - Iesire")
 
 	x = input()
 
-	if x not in ['1', '2', '3', '4', '0']:
+	if x not in ['1', '2', '3', '4', '5', '0']:
 		print("Input gresit!")
 		meniu(timelines)
 		return
@@ -113,7 +142,12 @@ def meniu(timelines):
 		return
 
 	if x == '4':
-		afisareGraficCazuri(timelines['confirmed']['timeline'])
+		afisareGraficCazuriNoi(timelines['confirmed']['timeline'])
+		meniu(timelines)
+		return
+
+	if x == '5':
+		afisareGrafiCazuri(timelines['confirmed']['timeline'])
 		meniu(timelines)
 		return
 
