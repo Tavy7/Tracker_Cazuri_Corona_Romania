@@ -221,9 +221,8 @@ def printData(data):
 
 
 
-def main():
-	data = getData()
-	printData(data)
+def main(): 
+	printData(getData())
 
 if __name__ == "__main__":
 	main()
