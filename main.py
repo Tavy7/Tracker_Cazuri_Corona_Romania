@@ -69,6 +69,7 @@ def afisareGraficCazuriNoi(cazuri):
 		if j == 0:
 			continue
 		height.append(int(j - aux))
+		aux = j
 
 		if str(i)[6] != luna:
 			luna = str(i)[6]
@@ -76,8 +77,6 @@ def afisareGraficCazuriNoi(cazuri):
 			continue
 
 		label.append(str(i)[8:10])
-
-		aux = j
 
 	plt.bar(range(1, len(height) + 1), height,
 	 tick_label = label, width = 0.7, color = 'black')
@@ -104,8 +103,6 @@ def afisareGrafiCazuri(cazuri):
 			continue
 
 		label.append(str(i)[8:10])
-	print (label)
-
 
 	plt.bar(range(1, len(height) + 1), height,
 	 tick_label = label, width = 0.7, color = 'black')
@@ -221,7 +218,7 @@ def printData(data):
 
 
 
-def main(): 
+def main():
 	printData(getData())
 
 if __name__ == "__main__":
